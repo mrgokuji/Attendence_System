@@ -2,10 +2,11 @@ import cv2
 import numpy as np
 import os
 import time
+import face_detection
 
-filename = 'harsh.avi'
-f_p_s = 24.0
-res = '720p'
+# filename = 'harsh.avi'
+# f_p_s = 24.0
+# res = '720p'
 
 
 def resize_accordingly(cam,height,width):
@@ -57,11 +58,14 @@ def resize_480p():
 	cam.set(3,640)
 	cam.set(4,480)
 
-cam = cv2.VideoCapture(0)
-out = cv2.VideoWriter(filename,get_video_type(filename),15,get_dims(cam, res))
-cv2.namedWindow("test")
 
-def main(img_counter = 1):
+img_counter = 1
+
+def main():
+	global cam, out,img_counter
+	cam = cv2.VideoCapture(0)
+	out = cv2.VideoWriter(filename,get_video_type(filename),15,get_dims(cam, res))
+	#cv2.namedWindow("test")
 	resize_1080p()
 
 
@@ -70,7 +74,7 @@ def main(img_counter = 1):
 	#gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)		#for converting into gray color
 	#sketch_gray, sketch_color = cv2.pencilSketch(frame, sigma_s=60, sigma_r=0.07, shade_factor=0.05) 	#for converting into sketch and sketch colour
 
-	cv2.imshow("test", frame)
+	#cv2.imshow("test", frame)
 	#out.write(frame)			//video wala
 	img_name = "{}.png".format(img_counter)
 	path = '/root/Documents/miniProject/ML Part/facial_recogn/test'
@@ -97,8 +101,14 @@ def main(img_counter = 1):
 	# 	img_counter += 1
 	#time.sleep(10)
 	cam.release()
+	try:
+	    face_detection.main(img_counter)
+	except Exception as e:
+	    print("Error in detection of faces\nDue to following error : ")
+	    print(e)
+	img_counter += 1
 	#out.release()                      ## for releasing the instance of video saving
-	cv2.destroyAllWindows()
+	#cv2.destroyAllWindows()
 
 
 if __name__ == '__main__':

@@ -7,6 +7,7 @@ import time
 
 cam = cv2.VideoCapture(0)
 
+#function to click an image and saving as 1.png,2.png,etc.....
 def click_pic(img_counter):
 	ret, frame = cam.read()
 	img_name = "{}.png".format(img_counter)
@@ -46,11 +47,11 @@ port = 5000
 
 image = '/home/pi/attendence/'
 for file in files:
-	s = socket.socket()
-	s.connect((host,port))
-	f = open(image + file,'rb')
+	s = socket.socket() #socket creation
+	s.connect((host,port)) #establishinng connection 
+	f = open(image + file,'rb') #opening the file in read mode
 	l = f.read(1024)
 	while (l):
-		s.send(l)
+		s.send(l)	#sending the file 
 		l = f.read(1024)
 	s.close()
